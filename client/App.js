@@ -9,8 +9,27 @@ import {
   Text,
   View
 } from 'react-native';
+import AWSAppSyncClient from 'aws-appsync'
+import { Rehydrated } from 'aws-appsync-react'
+import { AUTH_TYPE } from 'aws-appsync/lib/link/auth-link'
+import { graphql, ApolloProvider, compose } from 'react-apollo'
+import * as AWS from 'aws-sdk'
+import AppSync from './AppSync.js'
 import AllEvents from './Components/AllEvents'
 import AddEvent from './Components/AddEvent'
+import AllEventsQuery from './Queries/AllEventsQuery'
+import NewEventMutation from './Queries/NewEventMutation'
+import DeleteEventMutation from './Queries/DeleteEventMutation'
+import UpdateEventMutation from './Queries/UpdateEventMutation'
+
+const client = new AWSAppSyncClient({
+  url: AppSync.graphqlEndpoint,
+  region: AppSync.region,
+  auth: {
+    type: AUTH_TYPE.API_KEY,
+    apiKey: AppSync.apiKey,
+  }
+})
 
 const events = [{ "id": "1", "title": "My Event", "author": "meetup.com" }, { "id": "2", "title": "My Second Event", "author": "eventbrite.com" }];
 
