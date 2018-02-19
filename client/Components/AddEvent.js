@@ -27,7 +27,8 @@ export default class AddEvent extends Component<Props> {
   getInitialState = () => ({
     name: '',
     where: '',
-    when: ''
+    when: '',
+    description: ' '
   })
 
   handleChange = (field, value) => {
@@ -37,10 +38,10 @@ export default class AddEvent extends Component<Props> {
   }
 
   handleAdd = () => {
-    const { name, where, when } = this.state;
+    const { name, where, when, description } = this.state;
 
     this.setState(this.getInitialState(), () => {
-      this.props.onAdd({ name, where, when });
+      this.props.onAdd({ name, where, when, description });
     });
   }
 
@@ -55,6 +56,7 @@ export default class AddEvent extends Component<Props> {
           <TextInput style={{ borderWidth: 1 }} value={this.state.name} onChangeText={this.handleChange.bind(this, 'name')} placeholder='name' />
           <TextInput style={{ borderWidth: 1 }} value={this.state.where} onChangeText={this.handleChange.bind(this, 'where')} placeholder='where' />
           <TextInput style={{ borderWidth: 1 }} value={this.state.when} onChangeText={this.handleChange.bind(this, 'when')} placeholder='when' />
+          <TextInput style={{ borderWidth: 1 }} value={this.state.description} onChangeText={this.handleChange.bind(this, 'description')} placeholder='description' />
         <View>
           <Button title="Add" onPress={this.handleAdd} />
           <Button title="Cancel" onPress={this.handleCancel} />

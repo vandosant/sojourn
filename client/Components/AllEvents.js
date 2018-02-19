@@ -87,7 +87,6 @@ export default class App extends Component<Props> {
       (
         <View key={event.id} style={styles.item}>
           <View style={styles.itemColumn}>
-            <Text>{event.id}</Text>
             <Text>{event.name}</Text>
             <Text>{event.where}</Text>
             <Text>{event.when}</Text>

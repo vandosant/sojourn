@@ -45,7 +45,7 @@ class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <AddEventWithData />
+        <NewEventWithData />
         <AllEventsWithData />
       </View>
     )
@@ -103,25 +103,15 @@ const AllEventsWithData = compose(
   })
 )(AllEvents)
 
-const AddEventWithData = graphql(NewEventMutation, {
+const NewEventWithData = graphql(NewEventMutation, {
   options: {
-    refetchQueries: [{ query: AllEventsQuery }],
-    update: (proxy, { data: { addEvent } }) => {
-      const query = AllEventsQuery
-      const data = proxy.readQuery({ query })
-
-      data.listEvents.items = data.listEvents.items.push(addEvent)
-
-      proxy.writeQuery({ query, data })
-    }
+    refetchQueries: [{ query: AllEventsQuery }]
   },
   props: (props) => ({
-    onAdd: (event) => {
-      props.mutate({
-        variables: { ...event },
-        optimisticResponse: () => ({ addEvent: { ...event, __typename: 'Event' } })
-      })
-    }
+    onAdd: (event) => props.mutate({
+      variables: event,
+      optimisticResponse: () => ({ createEvent: { ...event, __typename: 'Event', id: Math.round(Math.random() * -1000000).toString() } })
+    })
   })
 })(AddEvent)
 
