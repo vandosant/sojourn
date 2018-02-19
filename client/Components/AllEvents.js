@@ -9,6 +9,7 @@ import {
   StyleSheet,
   ScrollView,
   Text,
+  TextInput,
   View
 } from 'react-native';
 
@@ -87,8 +88,9 @@ export default class App extends Component<Props> {
         <View key={event.id} style={styles.item}>
           <View style={styles.itemColumn}>
             <Text>{event.id}</Text>
-            <Text>{event.title}</Text>
-            <Text>{event.author}</Text>
+            <Text>{event.name}</Text>
+            <Text>{event.where}</Text>
+            <Text>{event.when}</Text>
           </View>
           <View style={styles.itemColumn}>
             <Button title="Edit" onPress={this.handleEdit.bind(this, event)} />
@@ -99,12 +101,14 @@ export default class App extends Component<Props> {
         <View key={event.id} style={styles.item}>
           <View style={styles.itemColumn}>
             <Text>{event.id}</Text>
-            <TextInput style={{ borderWidth: 1 }} value={editData.title} onChangeText={this.handleFieldEdit.bind(this, event.id, 'title')} />
-            <TextInput style={{ borderWidth: 1 }} value={editData.author} onChangeText={this.handleFieldEdit.bind(this, event.id, 'author')} />
+            <TextInput style={{ borderWidth: 1 }} value={editData.name} onChangeText={this.handleFieldEdit.bind(this, event.id, 'name')} />
+            <TextInput style={{ borderWidth: 1 }} value={editData.where} onChangeText={this.handleFieldEdit.bind(this, event.id, 'where')} />
+            <TextInput style={{ borderWidth: 1 }} value={editData.when} onChangeText={this.handleFieldEdit.bind(this, event.id, 'when')} />
+            <TextInput style={{ borderWidth: 1 }} value={editData.description} onChangeText={this.handleFieldEdit.bind(this, event.id, 'description')} />
           </View>
           <View style={styles.itemColumn}>
             <Button title="Save" onPress={this.handleEditSave.bind(this, event.id)} />
-            <Button title="Cancel" onPress={this.handleEditCancel.bind(this, post.id)} />
+            <Button title="Cancel" onPress={this.handleEditCancel.bind(this, event.id)} />
           </View>
         </View>
       )

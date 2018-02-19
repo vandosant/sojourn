@@ -2,8 +2,8 @@ import gql from 'graphql-tag'
 
 export default gql`
 query AllEvents {
-    allEvent {
-        events {
+    listEvents {
+        items {
             __typename
             id
             name
