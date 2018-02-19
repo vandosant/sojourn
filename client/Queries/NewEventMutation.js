@@ -8,7 +8,6 @@ mutation AddEventMutation($name: String!, $where: String!, $when: String!) {
         when: $when
         description: " "
     ) {
-        __typename
         id
         name
         where

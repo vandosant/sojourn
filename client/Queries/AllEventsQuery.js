@@ -4,7 +4,6 @@ export default gql`
 query AllEvents {
     listEvents {
         items {
-            __typename
             id
             name
             where

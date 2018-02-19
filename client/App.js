@@ -15,12 +15,10 @@ import { Rehydrated } from 'aws-appsync-react'
 import { AUTH_TYPE } from 'aws-appsync/lib/link/auth-link'
 import { graphql, ApolloProvider, compose } from 'react-apollo'
 import * as AWS from 'aws-sdk'
-import { filter } from 'graphql-anywhere'
 import AppSync from './AppSync.js'
 import AllEvents from './Components/AllEvents'
 import AddEvent from './Components/AddEvent'
 import AllEventsQuery from './Queries/AllEventsQuery'
-import EventQuery from './Queries/EventQuery'
 import NewEventMutation from './Queries/NewEventMutation'
 import DeleteEventMutation from './Queries/DeleteEventMutation'
 import UpdateEventMutation from './Queries/UpdateEventMutation'
@@ -89,7 +87,7 @@ const AllEventsWithData = compose(
         const query = AllEventsQuery
         const data = proxy.readQuery({ query })
 
-        data.listEvents.items = data.listEvents.items.map(event => event.id !== updateEvent.id ? event : filter(EventQuery, { updateEvent }))
+        data.listEvents.items = data.listEvents.items.map(event => event.id !== updateEvent.id ? event : { ...updateEvent })
 
         proxy.writeQuery({ query, data })
       }
@@ -118,10 +116,10 @@ const AddEventWithData = graphql(NewEventMutation, {
     }
   },
   props: (props) => ({
-    onAdd: event => {
+    onAdd: (event) => {
       props.mutate({
-        variables: event,
-        optimisticResponse: () => ({ createEvent: { ...event, __typename: 'Event' } })
+        variables: { ...event },
+        optimisticResponse: () => ({ addEvent: { ...event, __typename: 'Event' } })
       })
     }
   })
