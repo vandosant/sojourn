@@ -15,13 +15,14 @@ import { Rehydrated } from 'aws-appsync-react'
 import { AUTH_TYPE } from 'aws-appsync/lib/link/auth-link'
 import { graphql, ApolloProvider, compose } from 'react-apollo'
 import * as AWS from 'aws-sdk'
-import AppSync from './AppSync.js'
+import AppSync from './AppSync'
 import AllEvents from './Components/AllEvents'
 import AddEvent from './Components/AddEvent'
 import AllEventsQuery from './Queries/AllEventsQuery'
 import NewEventMutation from './Queries/NewEventMutation'
 import DeleteEventMutation from './Queries/DeleteEventMutation'
 import UpdateEventMutation from './Queries/UpdateEventMutation'
+import Sandbox from './sandbox/App'
 
 const client = new AWSAppSyncClient({
   url: AppSync.graphqlEndpoint,
@@ -135,4 +136,4 @@ const WithProvider = () => (
 
 AppRegistry.registerComponent('sojourn', WithProvider)
 
-export default WithProvider
+module.exports = __DEV__ ? Sandbox : WithProvider

@@ -13,14 +13,37 @@ import {
   View
 } from 'react-native';
 
-type Props = {};
-export default class App extends Component<Props> {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      editing: {}
+type Props = {
+  events: Array<{
+    id: string,
+    name: string,
+    where: string,
+    when: string,
+  }>,
+  error?: {
+    message: string,
+    networkError: {
+      response: {
+        _bodyText: string
+      }
     }
+  },
+  onDelete: (event: { id: string }) => void,
+  onEdit: (event: { id: string }) => void
+};
+
+type State = {
+  editing: {
+    id?: string,
+    name?: string,
+    where?: string,
+    when?: string
+  }
+}
+
+export default class App extends Component<Props, State> {
+  state = {
+    editing: {}
   }
 
   static defaultProps = {
@@ -29,7 +52,7 @@ export default class App extends Component<Props> {
     onEdit: () => null
   }
 
-  handleDelete = async (event) => {
+  handleDelete = async (event: { id: string }) => {
     const confirm = await new Promise((resolve, reject) => {
       Alert.alert('Confirm delete', 'Are you sure?', [
         { text: 'OK', onPress: () => resolve(true) },
@@ -42,20 +65,20 @@ export default class App extends Component<Props> {
     }
   }
 
-  handleEdit = (event) => {
+  handleEdit = (event: { id: string }) => {
     const { editing } = this.state;
 
     this.setState({ editing: { ...editing, [event.id]: { ...event } } } );
   }
 
-  handleEditCancel = (id) => {
+  handleEditCancel = (id: string) => {
     const { editing } = this.state;
     const { [id]: curr, ...others } = editing;
 
     this.setState({ editing: { ...others } });
   }
 
-  handleFieldEdit = (id, field, value) => {
+  handleFieldEdit = (id: string, field: string, value: string) => {
     const { editing } = this.state;
     const editData = { ...editing[id] };
 
@@ -66,7 +89,7 @@ export default class App extends Component<Props> {
     });
   }
 
-  handleEditSave = (id) => {
+  handleEditSave = (id: string) => {
     const { editing } = this.state;
     const { [id]: editedEvent, ...others } = editing;
 
@@ -76,7 +99,7 @@ export default class App extends Component<Props> {
     });
   }
 
-  renderOrEditEvent = (event) => {
+  renderOrEditEvent = (event: { id: string, name: string, where: string, when: string }) => {
     const { editing } = this.state;
 
     const editData = editing[event.id];
@@ -138,13 +161,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'stretch',
-    padding: 30,
-    margin: 2,
   },
   item: {
     flexDirection: 'row',
-    borderWidth: 1,
-    paddingTop: 10
+    paddingTop: 10,
+    backgroundColor: 'rgba(221,216,193,1.0)'
   },
   itemColumn: {
     flex: 1,
@@ -154,7 +175,6 @@ const styles = StyleSheet.create({
   },
   scroller: {
     flexGrow:1,
-    padding: 10
   }
 });
 
